@@ -1,0 +1,196 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CMC Cloud</name>
+    </assembly>
+    <members>
+        <member name="T:CMCCloud.Constants">
+            <summary>
+            Constants
+            </summary>
+        </member>
+        <member name="F:CMCCloud.Constants.ProblematicCharacters">
+            <summary>
+                Problematische Zeichen in Dateinamen (Meshlab spezifisch)
+            </summary>
+        </member>
+        <member name="T:CMCCloud.Controllers.JobController">
+            <summary>
+                Job Controller - API for Upload Job and Download a Job Result
+            </summary>
+        </member>
+        <member name="F:CMCCloud.Controllers.JobController._appSettings">
+            <summary>
+                Appsettings from appsettings.json
+            </summary>
+        </member>
+        <member name="M:CMCCloud.Controllers.JobController.#ctor(Microsoft.Extensions.Options.IOptions{CMCCloud.Helper.AppSettings})">
+            <summary>
+                Constructor
+            </summary>
+            <param name="appSettings">AppSettings</param>
+        </member>
+        <member name="M:CMCCloud.Controllers.JobController.UploadJob(Microsoft.AspNetCore.Http.IFormFile,System.String,System.String,System.String)">
+            <summary>
+                Upload a new Job
+            </summary>
+            <param name="file">Input File</param>
+            <param name="fScriptParams">Parameters for the script</param>
+            <param name="scriptFilename">Script to use</param>
+            <param name="outputFileFormat">format of the file output</param>
+            <returns>Job Result</returns>
+        </member>
+        <member name="M:CMCCloud.Controllers.JobController.DownloadJobFileResult(System.String,System.String)">
+            <summary>
+                Download converted file of the job
+            </summary>
+            <param name="filename">Filename</param>
+            <param name="jobId">Job Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:CMCCloud.Controllers.JobController.DownloadLogForJob(System.String)">
+            <summary>
+            Downloads the log file of the convertion
+            </summary>
+            <param name="jobId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CMCCloud.Controllers.JobController.GetFileSizeInBytes(System.Int64)">
+            <summary>
+            Format Filezise
+            </summary>
+            <param name="TotalBytes">Count of Bytes</param>
+            <returns></returns>
+        </member>
+        <member name="M:CMCCloud.Controllers.JobController.CheckFileExtension(System.String)">
+            <summary>
+                Checks if the file extension is valid.
+            </summary>
+            <param name="filename">
+                Returns the index of the extension separator ('.') or a negative number when the extension is
+                invalid.
+            </param>
+            <returns></returns>
+        </member>
+        <member name="M:CMCCloud.Controllers.JobController.CorrectFileName(System.String)">
+            <summary>
+                Removes problematic characters from the filename.
+            </summary>
+            <param name="filename">The original filename.</param>
+            <returns>A cleaned filename</returns>
+        </member>
+        <member name="T:CMCCloud.Controllers.ParameterController">
+            <summary>
+            Parameter Controller - API for getting the scripts with the parameters
+            </summary>
+        </member>
+        <member name="F:CMCCloud.Controllers.ParameterController._appSettings">
+            <summary>
+            Application Settings from appsettings.json
+            </summary>
+        </member>
+        <member name="F:CMCCloud.Controllers.ParameterController.LstSupportedExportFormats">
+            <summary>
+            List of supported output formats
+            </summary>
+        </member>
+        <member name="F:CMCCloud.Controllers.ParameterController.LstSupportedInputFormats">
+            <summary>
+            List of supported input formats
+            </summary>
+        </member>
+        <member name="M:CMCCloud.Controllers.ParameterController.#ctor(Microsoft.Extensions.Options.IOptions{CMCCloud.Helper.AppSettings})">
+            <summary>
+            Constructor
+            </summary>
+            <param name="appSettings">Application Settings</param>
+        </member>
+        <member name="M:CMCCloud.Controllers.ParameterController.GetSupportedExportFormats">
+            <summary>
+            Get the supported export formats
+            </summary>
+        </member>
+        <member name="M:CMCCloud.Controllers.ParameterController.GetSupportedInputFormats">
+            <summary>
+            Get the supported export formats
+            </summary>
+        </member>
+        <member name="M:CMCCloud.Controllers.ParameterController.GetScripts">
+            <summary>
+            Get the scripts with its parameters
+            </summary>
+            <returns>List of Scripts</returns>
+        </member>
+        <member name="T:CMCCloud.Helper.AppSettings">
+            <summary>
+            Application Settings
+            </summary>
+        </member>
+        <member name="P:CMCCloud.Helper.AppSettings.WorkingDirectory">
+            <summary>
+                Working directory
+            </summary>
+        </member>
+        <member name="P:CMCCloud.Helper.AppSettings.ScriptDirectory">
+            <summary>
+                Script directory
+            </summary>
+        </member>
+        <member name="P:CMCCloud.Helper.AppSettings.MeshLabDirectory">
+            <summary>
+                MeshLab directory
+            </summary>
+        </member>
+        <member name="P:CMCCloud.Helper.AppSettings.UploadDirectoryName">
+            <summary>
+            Folder for the temporary files that are uploaded -> Will be generated at Root-Level of the hosting application
+            </summary>
+        </member>
+        <member name="P:CMCCloud.Helper.AppSettings.ResultFileNameEnding">
+            <summary>
+            ResultFileName Ending
+            </summary>
+        </member>
+        <member name="P:CMCCloud.Helper.AppSettings.FilterOutputFilename">
+            <summary>
+            Name of the filterouptut file
+            </summary>
+        </member>
+        <member name="T:CMCCloud.Helper.ParameterConverter">
+            <summary>
+            <para>Converts the Parameter type</para>
+            Klasse ParameterConverter. (C) 2019 FOTEC Forschungs- und Technologietransfer GmbH
+            </summary>
+        </member>
+        <member name="M:CMCCloud.Helper.ParameterConverter.ConvertParameter(System.String)">
+            <summary>
+            Converts the Parameter Type
+            </summary>
+            <param name="parameterName"></param>
+            <returns></returns>
+        </member>
+        <member name="T:CMCCloud.Startup">
+            <summary>
+            Startup
+            </summary>
+        </member>
+        <member name="F:CMCCloud.Startup.SwaggerVersion">
+            <summary>
+            Which Swagger Version to use
+            </summary>
+        </member>
+        <member name="T:CMCCloud.SwaggerOperations.UploadJobOperation">
+            <summary>
+                UploadJobOperation - Converter for the file
+            </summary>
+        </member>
+        <member name="M:CMCCloud.SwaggerOperations.UploadJobOperation.Apply(Swashbuckle.AspNetCore.Swagger.Operation,Swashbuckle.AspNetCore.SwaggerGen.OperationFilterContext)">
+            <summary>
+            Apply the operation
+            
+            </summary>
+            <param name="operation">operation</param>
+            <param name="context">context</param>
+        </member>
+    </members>
+</doc>

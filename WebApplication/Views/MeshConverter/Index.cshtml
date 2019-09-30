@@ -1,0 +1,212 @@
+﻿@using CMCWeb.ServiceAccess
+@model MeshModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<style type="text/css">
+    input.error {
+        border: 1px solid red;
+    }
+
+    .error {
+        color: red;
+    }
+
+    .card {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+
+    .loader {
+        border: 16px solid #f3f3f3; /* Light grey */
+        border-top: 16px solid #3498db; /* Blue */
+        border-radius: 50%;
+        margin-left: 70px;
+        margin-bottom: 30px;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+    }
+
+    /* Safari */
+    @@-webkit-keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+<div class="row">
+    <div class="col-12">
+        <h4>Choose your model, select a script and start the conversion</h4>
+        <p title="3D Studio File Format (*.3ds)&#013;Stanford Polygon File Format (*.ply)&#013;STL File Format (*.stl)&#013;Alias Wavefront Object (*.obj)&#013;Quad Object (*.qobj)&#013;Object File Format (*.off)&#013;PTX File Format (*.ptx)&#013;VCG Dump File Format (*.vmi)&#013;FBX Autodesk Interchange Format (*.fbx)&#013;Breuckmann File Format (*.bre)&#013;Collada File Format (*.dae)&#013;OpenCTM compressed format (*.ctm)&#013;Expe's point set - binary (*.pts)&#013;Expe's point set - ascii (*.apts)&#013;XYZ Point Cloud - with and without normal (*.xyz)&#013;Protein Data Bank (*.pdb)&#013;TRI (photogrammetric reconstructions) (*.tri)&#013;ASC (ascii triplets of points) (*.asc)&#013;TXT (Generic ASCII point list) (*.txt)&#013;X3D File Format - XML encoding (*.x3d)&#013;X3D File Format - VRML encoding (*.x3dv)&#013;VRML 2.0 File Format (*.wrl)">Hover to see supported input formats</p></div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <input id="file" type="file" name="file" class="form-control-file" required />
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-2">
+        <label class="col-form-label">Experience</label>
+    </div>
+    <div class="col-10">
+        <select class="form-control" id="selExpertLevel" onchange="selExpertSelectChange()">
+            <option value="1">Expert</option>
+            <option value="2">Beginner</option>
+        </select>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-2">
+        <label class="col-form-label">Output format</label>
+    </div>
+    <div class="col-10">
+        <select class="form-control" id="selOutputFormat">
+            @foreach (var s in Model.SupportedExportFormats)
+            {
+                <option value="@s.Id">@s.Description</option>
+            }
+        </select>
+    </div>
+</div>
+<div class="row">
+    <div class="col-10 offset-2">
+        <p class="text-warning">Note: Preview only available for *.obj and *.stl</p>
+    </div>
+</div>
+    <hr />
+    <div class="row">
+        <div class="col-2">
+            <label class="col-form-label">Script</label>
+        </div>
+        <div class="col-10">
+            <select class="form-control" onchange="fSelectChanged(this)">
+                <option value="0">-- Choose script --</option>
+                @{ int j = 1; }
+                @foreach (var s in Model.Scripts)
+            {
+                <option value="@j">@s.Description (@s.FileName)</option>
+                { j++; }
+            }
+            </select>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+
+            @{ int i = 1; }
+            @foreach (var script in Model.Scripts)
+        {
+
+            <form class="fsForm" asp-action="Index" enctype="multipart/form-data" id="@i" style="display: none;">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                @Html.HiddenFor(model => script.FileName)
+                @{ i++;}
+                @foreach (var filter in script.LstFilters)
+                {
+                <div class="card filteritem">
+                    <div class="card-header bg-info">
+                        Filter - @filter.Name
+                    </div>
+                    <div class="card-body">
+                        @if (filter.LstParameters != null && filter.LstParameters.Any())
+                            {
+                                foreach (var par in filter.LstParameters)
+                                {
+                        <div class="form-group">
+                            <label class="control-label" data-toggle="tooltip" title="@par.Tooltip">@(par.Description != null ? par.Description : par.Name)</label>
+                            @if (par.Type == ScriptParameterType._0)
+                                        {
+                                            //Integer
+                            <input class="form-control integer" value="@par.DefaultValue" name="@String.Concat(filter.Name, "#", par.Name)" title="@par.Tooltip" />
+                                        }
+                                        else if (par.Type == ScriptParameterType._1)
+                                        {
+                                            //Float
+                            <input class="form-control float" value="@par.DefaultValue" name="@String.Concat(filter.Name, "#", par.Name)" title="@par.Tooltip" />
+                                        }
+                                        else if (par.Type == ScriptParameterType._2)
+                                        {
+                                            //Text
+                            <input class="form-control" value="@par.DefaultValue" name="@String.Concat(filter.Name, "#", par.Name)" title="@par.Tooltip" />
+                                        }
+                                        else if (par.Type == ScriptParameterType._3)
+                                        {
+                                            //Boolean
+                            <select class="form-control" name="@String.Concat(filter.Name, "#", par.Name)">
+                                <option value="true" selected="@(par.DefaultValue == "true" ? "selected" : "")">Yes</option>
+                                <option value="false" selected="@(par.DefaultValue == "false" ? "selected" : "")">No</option>
+                            </select>
+                                        }
+                                        else if (par.Type == ScriptParameterType._4)
+                                        {
+                                            //Unknown
+                            <input number class="form-control" value="@par.DefaultValue" name="@String.Concat(filter.Name, "#", par.Name)" title="@par.Tooltip" />
+                                        }
+
+                            <span asp-validation-for="@par.Name" class="text-danger"></span>
+                        </div>
+                                }
+                            }
+                            else
+                            {
+                        <label class="control-label">No Settings available!</label>
+                            }
+                    </div>
+                </div>
+                }
+
+                <div class="form-group">
+                    <input type="submit" value="Start" class="btn btn-primary full-width" />
+                </div>
+            </form>
+        }
+        </div>
+    </div>
+
+    <div id="divContent">
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="loadMe" tabindex="-1" role="dialog" aria-labelledby="loadMeLabel" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <div class="loader"></div>
+                    <div clas="loader-txt">
+                        <p>The model is being converted and will be ready soon. Please wait a moment.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @section Scripts {
+
+        @*<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>*@
+    <script src="~/js/site.js"></script>
+        <script src="~/js/validation.js"></script>
+    }

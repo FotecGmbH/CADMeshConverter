@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CMC Cloud</name>
+    </assembly>
+    <members>
+        <member name="F:CMCCloud.Constants.ProblematicCharacters">
+            <summary>
+            Problematische Zeichen in Dateinamen (Meshlab spezifisch)
+            </summary>
+        </member>
+        <member name="M:CMCCloud.Controllers.JobController.CheckFileExtension(System.String)">
+            <summary>
+            Checks if the file extension is valid. 
+            </summary>
+            <param name="filename">Returns the index of the extension separator ('.') or a negative number when the extension is invalid.</param>
+            <returns></returns>
+        </member>
+        <member name="M:CMCCloud.Controllers.JobController.CorrectFileName(System.String)">
+            <summary>
+            Removes problematic characters from the filename.
+            </summary>
+            <param name="filename">The original filename.</param>
+            <returns>A cleaned filename</returns>
+        </member>
+        <member name="P:CMCCloud.Helper.AppSettings.WorkingDirectory">
+            <summary>
+            Arbeitsverzeichnis
+            </summary>
+        </member>
+        <member name="P:CMCCloud.Helper.AppSettings.ScriptDirectory">
+            <summary>
+            Skriptverzeichnis
+            </summary>
+        </member>
+        <member name="P:CMCCloud.Helper.AppSettings.MeshLabDirectory">
+            <summary>
+            MeshLab Verzeichnis
+            </summary>
+        </member>
+        <member name="T:CMCCloud.Helper.ParameterConverter">
+            <summary>
+            <para>Converts the Parameter type</para>
+            Klasse ParameterConverter. (C) 2019 FOTEC Forschungs- und Technologietransfer GmbH
+            </summary>
+        </member>
+        <member name="M:CMCCloud.Helper.ParameterConverter.ConvertParameter(System.String)">
+            <summary>
+            Converts the Parameter Type
+            </summary>
+            <param name="parameterName"></param>
+            <returns></returns>
+        </member>
+        <member name="F:CMCCloud.Startup.SwaggerVersion">
+            <summary>
+            Which Swagger Version to use
+            </summary>
+        </member>
+    </members>
+</doc>

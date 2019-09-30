@@ -1,0 +1,199 @@
+﻿@model MeshResultModel
+
+@{ Layout = null;}
+
+<style>
+
+    #info {
+        color: #fff;
+        position: absolute;
+        top: 10px;
+        width: 100%;
+        text-align: center;
+        z-index: 100;
+        display: block;
+    }
+
+    #info a {
+        color: #f00;
+        font-weight: bold;
+        text-decoration: underline;
+        cursor: pointer
+    }
+
+    #feedback {
+        color: darkorange;
+    }
+
+    #dat {
+        user-select: none;
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-Index: 200;
+    }
+
+    #canvasContainer {
+        width: 100%;
+        min-width: 640px;
+        min-height: 520px;
+        position: relative;
+        overflow: hidden;
+        z-index: 0;
+    }
+
+    .modelCanvas {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        top: 0;
+        left: 0;
+        background-color: #000000;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-12">
+        <h4>Result</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-info">
+                Detail information
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <span>Original Filename:</span>
+                    <span>@Model.Original.Filename</span>
+                    <span><a href="@Model.Original.PreviewUrl" download>Download</a></span>
+                    <br />
+                    <span>Original Filesize: @Model.Original.FileSize</span>
+                    <br />
+                    <span></span>
+                    <span>Result Filename:</span>
+                    <span>@Model.Result.Filename</span>
+                    <span><a href="@Model.Result.PreviewUrl" download>Download</a></span>
+                    <br />
+                    <span>Result Filesize: @Model.Result.FileSize</span>
+                    <br />
+                    <span>Filesize reduced by: @Model.ReducedBy</span>
+                    <br /><br />
+                    @foreach (var v in Model.Result.AdditionalValues)
+                    {
+                        <span>@v.Key:</span>
+                        <span>@v.Value</span>
+                        <br />
+                    }
+                    <br />
+                    <span>
+                        <a href="@ViewBag.Link" download>Download Logfile</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr />
+<div class="card">
+    <div class="card-header bg-info">
+        Preview
+    </div>
+    <div class="card-body">
+        <div class="form-group">
+            <button id="resetViewBtn" class="btn-primary">Reset View</button>
+
+            <br /><br />
+
+            <div id="canvasContainer">
+                <p>Model: @Model.Original.Filename</p>
+                <canvas id="originalCanvas" class="modelCanvas"></canvas>
+                <p>Model: @Model.Result.Filename</p>
+                <canvas id="resultCanvas" class="modelCanvas"></canvas>
+            </div>
+
+            <div id="dat"></div>
+
+            <div id="info">
+                <div id="feedback"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="~/js/three.js"></script>
+<script src="~/js/visualization/SyncedTrackballControls.js"></script>
+<script src="~/js/loaders/MTLLoader.js"></script>
+<script src="~/js/libs/dat.gui.min.js"></script>
+
+<script src="~/js/loaders/LoaderSupport.js"></script>
+<script src="~/js/loaders/OBJLoader2.js"></script>
+<script src="~/js/loaders/STLLoader.js"></script>
+<script src="~/js/visualization/ModelPreviewer.js"></script>
+<script type="text/javascript">
+
+     {
+
+        var oriPreview = new ModelPreviewer(document.getElementById('originalCanvas'));
+        var resPreview = new ModelPreviewer(document.getElementById('resultCanvas'));
+
+
+        var resizeWindow = function () {
+            oriPreview.resizeDisplayGL();
+            resPreview.resizeDisplayGL();
+        };
+
+        var render = function () {
+            requestAnimationFrame(render);
+            oriPreview.render();
+            resPreview.render();
+        };
+
+        window.addEventListener('resize', resizeWindow, false);
+
+        console.log('Starting initialization phase...');
+
+        oriPreview.initGL();
+        resPreview.initGL();
+
+        oriPreview.resizeDisplayGL();
+        resPreview.resizeDisplayGL();
+
+        oriPreview.initContent('@Model.Original.Filename', '@Model.Original.PreviewUrl', '@Model.Original.FileType' , 'todo:materialPath');
+        resPreview.initContent('@Model.Result.Filename', '@Model.Result.PreviewUrl', '@Model.Result.FileType', 'todo:materialPath');
+
+        render();
+
+        oriPreview.controls.addEventListener("change", function (e) {
+            resPreview.camera.copy(oriPreview.camera, true);
+        });
+          oriPreview.controls.addEventListener("start", function (e) {
+            resPreview.camera.copy(oriPreview.camera, true);
+          });
+          oriPreview.controls.addEventListener("end", function (e) {
+            resPreview.camera.copy(oriPreview.camera, true);
+        });
+        oriPreview.controls.addEventListener("targetSet", function (e) {
+            resPreview.controls.SetTarget(oriPreview.controls.GetTarget());
+        });
+
+    resPreview.controls.addEventListener("change", function (e) {
+            oriPreview.camera.copy(resPreview.camera, true);
+        });
+          resPreview.controls.addEventListener("start", function (e) {
+            oriPreview.camera.copy(resPreview.camera, true);
+          });
+          resPreview.controls.addEventListener("end", function (e) {
+            oriPreview.camera.copy(resPreview.camera, true);
+        });
+
+        $("#resetViewBtn").on("click", () => {
+            oriPreview.resetCamera();
+            oriPreview.controls.reset();
+            resPreview.resetCamera();
+            resPreview.controls.reset();
+        })
+    }
+</script>

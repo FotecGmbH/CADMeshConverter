@@ -9,5 +9,5 @@ The CADMeshConverter project makes it easier to start developing AR applications
 * Reduction of development costs
 * No know-how in 3D modelling necessary
 * Support for common data formats - Support for model preparation
-* Establishment of a free solution without limitation
+* Establishment of a free solution
 * open source

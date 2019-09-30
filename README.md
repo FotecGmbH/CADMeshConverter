@@ -35,4 +35,4 @@ Detailed information about the usage can be found [here](/Documentation/Anwender
 
 ## Documentation
 If you want to setup your own build you can find instructions in the wiki section.
-For detailed developer informations see
+Detailed developer informations can be found [here](/Documentation/Entwicklerdokumentation.pdf)

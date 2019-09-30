@@ -35,6 +35,6 @@ Detailed information about the usage can be found [here](/Documentation/Anwender
 
 Demo Android Application can be downloaded from [here](https://bit.ly/2kK6gAA)
 
-## Documentation
+## Developer instructions
 If you want to setup your own build you can find instructions in the wiki section.
 Detailed developer informations can be found [here](/Documentation/Entwicklerdokumentation.pdf)

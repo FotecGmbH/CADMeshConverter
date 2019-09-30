@@ -40,5 +40,5 @@ If you want to setup your own build you can find instructions in the wiki sectio
 Detailed developer informations can be found [here](/Documentation/Entwicklerdokumentation.pdf)
 
 ## Supported by
-The project was supperted by [netidee](https://www.netidee.at)
+The project was supperted by [netidee](https://www.netidee.at).
 Project progressions can be tracked at https://www.netidee.at/cadmeshconverter

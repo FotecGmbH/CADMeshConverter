@@ -31,7 +31,7 @@ Documetation of the Demo API can be found at
 http://meshapi.fotec.at:8091/swagger/index.html
 
 In the wiki section you can find a short descripton of the usage.
-Detailed information about the usage can be found [here](/Documentation/Entwicklerdokumentation.pdf)
+Detailed information about the usage can be found [here](/Documentation/Anwenderdokumentation.pdf)
 
 ## Documentation
 If you want to setup your own build you can find instructions in the wiki section.

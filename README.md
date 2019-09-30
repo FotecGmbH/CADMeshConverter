@@ -41,4 +41,5 @@ Detailed developer informations can be found [here](/Documentation/Entwicklerdok
 
 ## Supported by
 The project was supperted by [netidee](https://www.netidee.at).
+
 Project progressions can be tracked at https://www.netidee.at/cadmeshconverter

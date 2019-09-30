@@ -38,3 +38,7 @@ Demo Android Application can be downloaded from [here](https://bit.ly/2kK6gAA)
 ## Developer instructions
 If you want to setup your own build you can find instructions in the wiki section.
 Detailed developer informations can be found [here](/Documentation/Entwicklerdokumentation.pdf)
+
+## Supported by
+The project was supperted by [netidee](https://www.netidee.at)
+Project progressions can be tracked at https://www.netidee.at/cadmeshconverter
